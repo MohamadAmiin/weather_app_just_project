@@ -5,6 +5,8 @@ function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('user');
+  const [adminCode, setAdminCode] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,7 +24,7 @@ function Register() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, role, adminCode }),
       });
 
       const data = await response.json();
@@ -116,6 +118,34 @@ function Register() {
             />
           </div>
         </div>
+
+        <div className="form-group">
+          <label>Register as</label>
+          <select value={role} onChange={(e) => setRole(e.target.value)}>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        {role === 'admin' && (
+          <div className="form-group">
+            <label>Admin Secret Code</label>
+            <div className="input-wrapper">
+              <span className="input-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </span>
+              <input
+                type="password"
+                value={adminCode}
+                onChange={(e) => setAdminCode(e.target.value)}
+                placeholder="Enter admin secret code"
+                required
+              />
+            </div>
+          </div>
+        )}
 
         <button type="submit" className="btn" disabled={loading}>
           {loading ? 'Creating Account...' : 'Create Account'}

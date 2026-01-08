@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Admin from './pages/Admin';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,6 +35,10 @@ function App() {
         <Route
           path="/dashboard"
           element={user ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/admin"
+          element={user && user.role === 'admin' ? <Admin /> : <Navigate to="/dashboard" />}
         />
       </Routes>
     </BrowserRouter>
