@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:6
+    container_name: weather-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - weather-network
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: weather-backend
+    restart: always
+    ports:
+      - "5009:5009"
+    environment:
+      - PORT=5009
+      - MONGO_URI=mongodb://mongodb:27017/weather-app
+      - JWT_SECRET=your_super_secret_jwt_key_here
+      - WEATHER_API_KEY=demo_key
+    depends_on:
+      - mongodb
+    networks:
+      - weather-network
+
+  # Frontend React App
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: weather-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://backend:5009
+    depends_on:
+      - backend
+    networks:
+      - weather-network
+
+networks:
+  weather-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
