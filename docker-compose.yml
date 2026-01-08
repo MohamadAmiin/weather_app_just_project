@@ -16,7 +16,7 @@ services:
   # Backend API
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     container_name: weather-backend
     restart: always
@@ -35,7 +35,7 @@ services:
   # Frontend React App
   frontend:
     build:
-      context: ./client
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: weather-frontend
     restart: always

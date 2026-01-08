@@ -2,6 +2,32 @@
 
 This guide explains how to run the Weather App using Docker.
 
+## Project Structure
+
+```
+weather-app/
+├── backend/           # Node.js API server
+│   ├── config/
+│   ├── controllers/
+│   ├── data/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── server.js
+│   ├── app.js
+│   ├── package.json
+│   ├── Dockerfile
+│   └── .env
+├── frontend/          # React application
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   ├── Dockerfile
+│   └── vite.config.js
+├── docker-compose.yml
+└── DOCKER_README.md
+```
+
 ## Prerequisites
 
 - Docker installed on your machine
@@ -37,16 +63,32 @@ docker-compose down
 docker-compose down -v
 ```
 
+## Running Without Docker
+
+### Start Backend
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+### Start Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
 ## Individual Docker Commands
 
 ### Build Images Separately
 
 ```bash
 # Build backend image
-docker build -t weather-backend .
+docker build -t weather-backend ./backend
 
 # Build frontend image
-docker build -t weather-frontend ./client
+docker build -t weather-frontend ./frontend
 ```
 
 ### Run Containers Separately
