@@ -1,17 +1,15 @@
-const axios = require("axios");
+const weatherData = require("../data/weatherData");
 
 exports.getWeather = async (city) => {
-  const apiKey = process.env.WEATHER_API_KEY;
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  // Convert city to lowercase for matching
+  const cityLower = city.toLowerCase().trim();
 
-  try {
-    const response = await axios.get(url, { timeout: 10000 });
-    return response.data;
-  } catch (error) {
-    if (error.response) {
-      // API returned an error
-      throw new Error(error.response.data.message || "Weather API error");
-    }
-    throw new Error("Failed to connect to weather service");
+  // Find weather data for the city
+  const data = weatherData[cityLower];
+
+  if (!data) {
+    throw new Error("City not found. We have 100 cities available including: London, Paris, New York, Tokyo, Dubai, Mogadishu, Lagos, Cairo, Sydney, and more!");
   }
+
+  return data;
 };
